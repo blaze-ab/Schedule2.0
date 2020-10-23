@@ -55,7 +55,7 @@ class Lesson:
                and self.teacher == other.teacher and self.isLecture() == other.isLecture()
 
     def __str__(self):
-        objLesson = "Time: " + self.time + "\n" + "Subject: " + self.name + "\n" +\
+        objLesson = "Time: " + self.time + "\n" + "Subject: " + self.name + "\n" + \
                     "Teacher: " + self.teacher.__str__() + "\n" + "Audience: " + self.audience + "\n"
         if self.lecture:
             objLesson += "Lecture." + "\n"
@@ -100,13 +100,13 @@ class Schedule:
         if i == 1:
             self.monday = lessons
         elif i == 2:
-            self.tuesday = lessons 
+            self.tuesday = lessons
         elif i == 3:
-            self.wednesday = lessons 
+            self.wednesday = lessons
         elif i == 4:
-            self.thursday = lessons 
+            self.thursday = lessons
         elif i == 5:
-            self.friday = lessons     
+            self.friday = lessons
 
     def scheduleM(self):
         mon = ""
@@ -163,26 +163,25 @@ def randomizedTime(l, day):
 
 
 def randomizedSchedule(schedule):
-    res = Schedule(schedule.faculty, [], [] ,[] , [] , [])
+    res = Schedule(schedule.faculty, [], [], [], [], [])
     for i in range(DAYS):
         for l in schedule.get(i):
-            res.get(i).append(randomizedTime(l, schedule.faculty.get(i)) )
+            res.get(i).append(randomizedTime(l, schedule.faculty.get(i)))
     return res
 
 
-#variable is time of a lesson
-#domain is determined by the faculty's time constraints
+# variable is time of a lesson
+# domain is determined by the faculty's time constraints
 
-#restrictions are: lesson1.time != lesson2.time if(lesson1.teacher == lesson2.teacher or 
+# restrictions are: lesson1.time != lesson2.time if(lesson1.teacher == lesson2.teacher or
 # for any i lesson1.students[i] == lesson2.students[i])
-#returns true if lessons fit the constraints mentioned above
+# returns true if lessons fit the constraints mentioned above
 def check_restrictions(lesson1, lesson2):
-    if(lesson1.name != lesson2.name or lesson1.time != lesson2.time):
+    if lesson1.name != lesson2.name or lesson1.time != lesson2.time:
         return True
-    if(lesson1.teacher == lesson2.teacher):
+    if lesson1.teacher == lesson2.teacher:
         return False
     for student in lesson1.students:
-        if( student in lesson2.students ):
+        if student in lesson2.students:
             return False
     return True
-    
