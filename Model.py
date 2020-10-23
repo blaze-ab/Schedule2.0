@@ -76,8 +76,6 @@ class Schedule:
         self.wednesday = Graph(w)
         self.thursday = Graph(tr)
         self.friday = Graph(f)
-
-    def connectLessons(self):
         for i in range(5):
             connectLessonsInDay(self.get(i))
 
