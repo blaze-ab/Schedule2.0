@@ -54,7 +54,7 @@ class Lesson:
                and self.teacher == other.teacher and self.isLecture() == other.isLecture()
 
     def __str__(self):
-        objLesson = "Time: " + self.time + "\n" + "Subject: " + self.name + "\n" +\
+        objLesson = "Time: " + self.time + "\n" + "Subject: " + self.name + "\n" + \
                     "Teacher: " + self.teacher.__str__() + "\n"
         if self.lecture:
             objLesson += "Lecture." + "\n"
@@ -87,13 +87,13 @@ class Schedule:
         if i == 1:
             self.monday = lessons
         elif i == 2:
-            self.tuesday = lessons 
+            self.tuesday = lessons
         elif i == 3:
-            self.wednesday = lessons 
+            self.wednesday = lessons
         elif i == 4:
-            self.thursday = lessons 
+            self.thursday = lessons
         elif i == 5:
-            self.friday = lessons     
+            self.friday = lessons
 
     def scheduleM(self):
         mon = ""
@@ -150,23 +150,23 @@ def randomizedTime(l, day):
 
 
 def randomizedSchedule(schedule):
-    res = Schedule(schedule.faculty, [], [] ,[] , [] , [])
+    res = Schedule(schedule.faculty, [], [], [], [], [])
     for i in range(DAYS):
         for l in schedule.get(i):
-            res.get(i).append(randomizedTime(l, schedule.faculty.get(i)) )
+            res.get(i).append(randomizedTime(l, schedule.faculty.get(i)))
     return res
 
 
-#variable is (time of a lesson, day)
-#domain: time is determined by the faculty's time constraints, and Monday<=day<=Friday
+# variable is (time of a lesson, day)
+# domain: time is determined by the faculty's time constraints, and Monday<=day<=Friday
 
-#restrictions are: lesson1.time != lesson2.time if(lesson1.teacher == lesson2.teacher or 
+# restrictions are: lesson1.time != lesson2.time if(lesson1.teacher == lesson2.teacher or
 # for any i lesson1.students[i] == lesson2.students[i])
-#returns true if lessons fit the constraints mentioned above
+# returns true if lessons fit the constraints mentioned above
 def connect(lesson1, lesson2):
-    if(lesson1.name != lesson2.name or lesson1.time != lesson2.time):
+    if lesson1.name != lesson2.name or lesson1.time != lesson2.time:
         return False
-    if(lesson1.teacher == lesson2.teacher and lesson1.lecture == lesson2.lecture):
+    if lesson1.teacher == lesson2.teacher and lesson1.lecture == lesson2.lecture:
         return True
     for student in lesson1.students:
         if student in lesson2.students:
@@ -213,4 +213,3 @@ class Graph:
                   "c": ["a", "d"],
                   "d": ["e"],
                   "e": ["d"]}
-
