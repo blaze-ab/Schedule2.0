@@ -185,3 +185,44 @@ def check_restrictions(lesson1, lesson2):
         if student in lesson2.students:
             return False
     return True
+
+
+class Graph:
+    def __init__(self, graph_elements=None):
+        if graph_elements is None:
+            self.graph = {}
+        self.graph = graph_elements
+
+    # Get the keys of the dictionary
+    def getVertices(self):
+        return list(self.graph.keys())
+
+    def addVertex(self, v):
+        if v not in self.graph:
+            self.graph[v] = []
+
+    def removeVertex(self, v):
+        self.graph.pop(v)
+        for vertex in self.graph:
+            if v in self.graph[vertex]:
+                self.graph.removeEdge(vertex, v)
+
+    def AddEdge(self, v1, v2):
+        if v2 in self.graph[v1]:
+            return
+        if v1 in self.graph:
+            self.graph[v1].append(v2)
+        else:
+            self.graph[v1] = [v2]
+
+    def removeEdge(self, v1, v2):
+        self.graph[v1].pop(v2)
+        if v2 in self.graph:
+            self.graph[v2].pop(v1)
+
+    # Create the dictionary with graph elements
+    graph_dict = {"a": ["b", "c"],
+                  "b": ["a", "d"],
+                  "c": ["a", "d"],
+                  "d": ["e"],
+                  "e": ["d"]}
