@@ -1,6 +1,3 @@
-import random
-import copy
-
 DAYS = 5
 
 
@@ -39,7 +36,7 @@ class Teacher:
 
 
 class Lesson:
-    def __init__(self, name, time, t, students, lecture, audience):  # String, Teacher, Array String, bool
+    def __init__(self, name, time, t, students, lecture):  # String, Teacher, Array String, bool
         self.name = name
         self.time = time  # "01052020.1500"
         self.teacher = t
@@ -196,4 +193,3 @@ class Graph:
         self.graph[v1].pop(v2)
         if v2 in self.graph:
             self.graph[v2].pop(v1)
-
