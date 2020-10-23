@@ -61,6 +61,13 @@ class Lesson:
         return objLesson
 
 
+def connectLessonsInDay(day):
+    for l1 in day.getVertices():
+        for l2 in day.getVertices():
+            if shouldConnect(l1, l2):
+                day.addEdge(l1, l2)
+
+
 class Schedule:
     def __init__(self, faculty, m, t, w, tr, f):  # String, rest: list of lessons that eventually turn into graphs
         self.faculty = faculty
@@ -69,6 +76,10 @@ class Schedule:
         self.wednesday = Graph(w)
         self.thursday = Graph(tr)
         self.friday = Graph(f)
+
+    def connectLessons(self):
+        for i in range(5):
+            connectLessonsInDay(self.get(i))
 
     def get(self, i):
         if i == 1:
@@ -175,7 +186,7 @@ class Graph:
             if v in self.graph[vertex]:
                 self.removeEdge(vertex, v)
 
-    def AddEdge(self, v1, v2):
+    def addEdge(self, v1, v2):
         if v2 in self.graph[v1]:
             return
         if v1 in self.graph:
