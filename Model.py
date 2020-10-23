@@ -170,4 +170,19 @@ def randomizedSchedule(schedule):
     return res
 
 
+#variable is time of a lesson
+#domain is determined by the faculty's time constraints
 
+#restrictions are: lesson1.time != lesson2.time if(lesson1.teacher == lesson2.teacher or 
+# for any i lesson1.students[i] == lesson2.students[i])
+#returns true if lessons fit the constraints mentioned above
+def check_restrictions(lesson1, lesson2):
+    if(lesson1.name != lesson2.name or lesson1.time != lesson2.time):
+        return True
+    if(lesson1.teacher == lesson2.teacher):
+        return False
+    for student in lesson1.students:
+        if( student in lesson2.students ):
+            return False
+    return True
+    
