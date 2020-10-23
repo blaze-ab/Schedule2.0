@@ -2,6 +2,8 @@ import random
 import copy
 
 DAYS = 5
+
+
 class Faculty:
     def __init__(self, name, d1, d2, d3, d4, d5):
         self.name = name
@@ -106,9 +108,6 @@ class Schedule:
         elif i == 5:
             self.friday = lessons     
 
-    def time(self):
-        return "11:40"
-
     def scheduleM(self):
         mon = ""
         for x in self.monday:
@@ -149,6 +148,7 @@ class Schedule:
                "Tuesday: \n" + self.scheduleT() + "\n" + "Wednesday: \n" + self.scheduleW() + "\n" + \
                "Thursday: \n" + self.scheduleTR() + "\n" + "Friday: \n" + self.scheduleF() + "\n"
 
+
 # +4 to our "weight" if there is conflict in audiences, +2 - in teachers' schedules, +1 - students
 def checkConflictsStudent(ss1, ss2):
     weightCS = 0
@@ -156,6 +156,7 @@ def checkConflictsStudent(ss1, ss2):
         if s in ss2:
             weightCS += 1
     return weightCS
+
 
 def randomizedTime(l, day):
     return Lesson(l.name, random.choice(day), l.teacher, l.students, l.lecture, l.audience)
