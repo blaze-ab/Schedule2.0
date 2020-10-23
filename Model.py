@@ -62,13 +62,13 @@ class Lesson:
 
 
 class Schedule:
-    def __init__(self, faculty, m, t, w, tr, f):  # String, rest: LessonArray
+    def __init__(self, faculty, m, t, w, tr, f):  # String, rest: list of lessons that eventually turn into graphs
         self.faculty = faculty
-        self.monday = m
-        self.tuesday = t
-        self.wednesday = w
-        self.thursday = tr
-        self.friday = f
+        self.monday = Graph(m)
+        self.tuesday = Graph(t)
+        self.wednesday = Graph(w)
+        self.thursday = Graph(tr)
+        self.friday = Graph(f)
 
     def get(self, i):
         if i == 1:
@@ -97,35 +97,35 @@ class Schedule:
 
     def scheduleM(self):
         mon = ""
-        for x in self.monday:
+        for x in self.monday.getVertices():
             mon += x.__str__()
             mon += "____________________" + "\n"
         return mon
 
     def scheduleT(self):
         tues = ""
-        for x in self.tuesday:
+        for x in self.tuesday.getVertices():
             tues += x.__str__()
             tues += "____________________" + "\n"
         return tues
 
     def scheduleW(self):
         wed = ""
-        for x in self.wednesday:
+        for x in self.wednesday.getVertices():
             wed += x.__str__()
             wed += "____________________" + "\n"
         return wed
 
     def scheduleTR(self):
         thur = ""
-        for x in self.thursday:
+        for x in self.thursday.getVertices():
             thur += x.__str__()
             thur += "____________________" + "\n"
         return thur
 
     def scheduleF(self):
         frid = ""
-        for x in self.friday:
+        for x in self.friday.getVertices():
             frid += x.__str__()
             frid += "____________________" + "\n"
         return frid
@@ -136,34 +136,13 @@ class Schedule:
                "Thursday: \n" + self.scheduleTR() + "\n" + "Friday: \n" + self.scheduleF() + "\n"
 
 
-# +4 to our "weight" if there is conflict in audiences, +2 - in teachers' schedules, +1 - students
-def checkConflictsStudent(ss1, ss2):
-    weightCS = 0
-    for s in ss1:
-        if s in ss2:
-            weightCS += 1
-    return weightCS
-
-
-def randomizedTime(l, day):
-    return Lesson(l.name, random.choice(day), l.teacher, l.students, l.lecture, l.audience)
-
-
-def randomizedSchedule(schedule):
-    res = Schedule(schedule.faculty, [], [], [], [], [])
-    for i in range(DAYS):
-        for l in schedule.get(i):
-            res.get(i).append(randomizedTime(l, schedule.faculty.get(i)))
-    return res
-
-
 # variable is (time of a lesson, day)
 # domain: time is determined by the faculty's time constraints, and Monday<=day<=Friday
 
 # restrictions are: lesson1.time != lesson2.time if(lesson1.teacher == lesson2.teacher or
 # for any i lesson1.students[i] == lesson2.students[i])
 # returns true if lessons fit the constraints mentioned above
-def connect(lesson1, lesson2):
+def shouldConnect(lesson1, lesson2):
     if lesson1.name != lesson2.name or lesson1.time != lesson2.time:
         return False
     if lesson1.teacher == lesson2.teacher and lesson1.lecture == lesson2.lecture:
@@ -178,7 +157,9 @@ class Graph:
     def __init__(self, graph_elements=None):
         if graph_elements is None:
             self.graph = {}
-        self.graph = graph_elements
+        else:
+            for v in graph_elements:
+                self.graph[v] = []
 
     # Get the keys of the dictionary
     def getVertices(self):
@@ -192,7 +173,7 @@ class Graph:
         self.graph.pop(v)
         for vertex in self.graph:
             if v in self.graph[vertex]:
-                self.graph.removeEdge(vertex, v)
+                self.removeEdge(vertex, v)
 
     def AddEdge(self, v1, v2):
         if v2 in self.graph[v1]:
@@ -207,9 +188,3 @@ class Graph:
         if v2 in self.graph:
             self.graph[v2].pop(v1)
 
-    # Create the dictionary with graph elements
-    graph_dict = {"a": ["b", "c"],
-                  "b": ["a", "d"],
-                  "c": ["a", "d"],
-                  "d": ["e"],
-                  "e": ["d"]}
