@@ -1,3 +1,5 @@
+import copy
+
 DAYS = 5
 
 
@@ -36,7 +38,7 @@ class Teacher:
 
 
 class Lesson:
-    def __init__(self, name, time, t, students, lecture):  # String, Teacher, Array String, bool
+    def __init__(self, name, time, t, students, lecture, audience):  # String, Teacher, Array String, bool
         self.name = name
         self.time = time  # "01052020.1500"
         self.teacher = t
@@ -58,11 +60,45 @@ class Lesson:
         return objLesson
 
 
-def connectLessonsInDay(day):
-    for l1 in day.getVertices():
-        for l2 in day.getVertices():
-            if shouldConnect(l1, l2):
-                day.addEdge(l1, l2)
+class Graph:
+    def __init__(self, graph_elements=None):
+        self.graph = []
+        if graph_elements is None:
+            self.graph = {}
+        else:
+            for v in graph_elements:
+                self.graph[v] = []
+
+    # Get the keys of the dictionary
+    def getVertices(self):
+        return list(self.graph.keys())
+
+    def addVertex(self, v):
+        if v not in self.graph:
+            self.graph[v] = []
+
+    def removeVertex(self, v):
+        self.graph.pop(v)
+        for vertex in self.graph:
+            if v in self.graph[vertex]:
+                self.removeEdge(vertex, v)
+
+    def degree(self, v):
+        return len(self.graph[v])
+
+    def AddEdge(self, v1, v2):
+        if v2 in self.graph[v1]:
+            return
+        if v1 in self.graph:
+            self.graph[v1].append(v2)
+        else:
+            self.graph[v1] = [v2]        
+
+    def removeEdge(self, v1, v2):
+        self.graph[v1].pop(v2)
+        if v2 in self.graph:
+            self.graph[v2].pop(v1)
+
 
 
 class Schedule:
@@ -73,8 +109,7 @@ class Schedule:
         self.wednesday = Graph(w)
         self.thursday = Graph(tr)
         self.friday = Graph(f)
-        for i in range(5):
-            connectLessonsInDay(self.get(i))
+
 
     def get(self, i):
         if i == 1:
@@ -157,39 +192,3 @@ def shouldConnect(lesson1, lesson2):
         if student in lesson2.students:
             return False
     return True
-
-
-class Graph:
-    def __init__(self, graph_elements=None):
-        if graph_elements is None:
-            self.graph = {}
-        else:
-            for v in graph_elements:
-                self.graph[v] = []
-
-    # Get the keys of the dictionary
-    def getVertices(self):
-        return list(self.graph.keys())
-
-    def addVertex(self, v):
-        if v not in self.graph:
-            self.graph[v] = []
-
-    def removeVertex(self, v):
-        self.graph.pop(v)
-        for vertex in self.graph:
-            if v in self.graph[vertex]:
-                self.removeEdge(vertex, v)
-
-    def addEdge(self, v1, v2):
-        if v2 in self.graph[v1]:
-            return
-        if v1 in self.graph:
-            self.graph[v1].append(v2)
-        else:
-            self.graph[v1] = [v2]
-
-    def removeEdge(self, v1, v2):
-        self.graph[v1].pop(v2)
-        if v2 in self.graph:
-            self.graph[v2].pop(v1)
