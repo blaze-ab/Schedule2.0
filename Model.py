@@ -161,7 +161,7 @@ def shouldConnect(lesson1, lesson2):
 
 class Graph:
     def __init__(self, graph_elements=None):
-        self.fraph = dict()
+        self.graph = dict()
         if graph_elements != None:
             for v in graph_elements:
                 self.graph[v] = []
