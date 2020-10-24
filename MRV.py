@@ -8,5 +8,8 @@ if __name__ == "__main__":
 
     print(G.degree("a"))
 
+    G.AddEdge("a","b")
+
+    print(G.degree("a"))
     print("Hello")
 
