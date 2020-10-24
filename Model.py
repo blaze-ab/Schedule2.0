@@ -182,7 +182,7 @@ class Graph:
                 self.removeEdge(vertex, v)
 
     def degree(self, v):
-        return len(graph[v])
+        return len(self.graph[v])
 
     def addEdge(self, v1, v2):
         if v2 in self.graph[v1]:
