@@ -62,8 +62,9 @@ class Lesson:
 class Graph:
     def __init__(self, graph_elements=None):
         self.graph = dict()
-        for v in graph_elements:
-            self.graph[v] = []
+        if(graph_elements!=None):
+            for v in graph_elements:
+                self.graph[copy.deepcopy(v)] = []
 
     # Get the keys of the dictionary
     def getVertices(self):
