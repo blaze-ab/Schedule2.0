@@ -1,5 +1,4 @@
 import copy
-
 DAYS = 5
 
 
@@ -62,12 +61,9 @@ class Lesson:
 
 class Graph:
     def __init__(self, graph_elements=None):
-        self.graph = []
-        if graph_elements is None:
-            self.graph = {}
-        else:
-            for v in graph_elements:
-                self.graph[v] = []
+        self.graph = dict()
+        for v in graph_elements:
+            self.graph[v] = []
 
     # Get the keys of the dictionary
     def getVertices(self):

@@ -4,9 +4,9 @@ import Model
 
 if __name__ == "__main__":
 
-    G = Model.Graph(["a", "b"])
+    G = Model.Graph()
 
-    print(G.degree("a"))
+    #print(G.degree("a"))
 
     print("Hello")
 
