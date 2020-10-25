@@ -187,7 +187,7 @@ class Graph:
             self.graph[v] = []
 
     def changeVertex(self, old_v, new_v):
-        self.graph[new_v] = self.graph.pop[old_v]
+        self.graph[new_v] = self.graph.pop(old_v)
 
     def removeVertex(self, v):
         self.graph.pop(v)

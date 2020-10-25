@@ -3,14 +3,16 @@ import copy
 import math
 
 
-def constraintSchedule(list, i):
+def constraintSchedule(lessons, time):
+    for lesson in lessons:
+        if lesson.time == time:
+            return True
+
     return False
 
 
-def constraint(list_of_pairs, i):
-    list_of_val = []
-    for pair in list_of_pairs:
-        list_of_val.append(pair[1])
+def constraint(list_of_val, i):
+    
     return i in list_of_val
 
 
@@ -32,10 +34,10 @@ def csp(graph, domain, constraint):
         return "???"
     used_domain = []
     b = False
-    cspUtil(graph, getSortedVerticesMRV(graph), 0, domain, used_domain, constraint, b)
+    cspUtil(graph, getSortedVerticesMRV(graph), 0, domain, used_domain, constraint)
 
 
-def cspUtil(graph, vertices, k, domain, used_domain, constraint, finished):
+def cspUtil(graph, vertices, k, domain, used_domain, constraint):
     if k >= len(vertices):
         global kek
         kek = True
@@ -44,18 +46,17 @@ def cspUtil(graph, vertices, k, domain, used_domain, constraint, finished):
     for i in domain:
         if not constraint(graph.getNeigbours(vertices[k]), i):
             if kek:
-                return 
-            if not constraint(graph.getNeigbours(vertices[k]), i):
+                return vertices
                 
-                print(str(vertices[k]) + "move to", str(i))
+            print(str(vertices[k]) + "move to", str(i))
+            #index = graph.getVertices().index(vertices[k])
+            graph.graph[vertices[k]].time = i
+            used_domain_copy = copy.deepcopy(used_domain)
+            used_domain_copy.append(i)
                 
-                graph.graph[(vertices[k][0], i)] = graph.graph.pop(vertices[k])
-                used_domain_copy = copy.deepcopy(used_domain)
-                used_domain_copy.append(i)
-                
-                cspUtil(graph, vertices, k + 1, domain, used_domain_copy, constraint, finished)
-            else : 
-                return
+            cspUtil(graph, vertices, k + 1, domain, used_domain_copy, constraint)
+        else : 
+            return
 
 
 def getSortedVerticesMRV(graph):
@@ -68,13 +69,15 @@ kek = False
 
 
 if __name__ == "__main__":
-    G = Model.Graph([( "a",0), ("b",0), ("c",0), ("d",0)])
-    G.addEdge(("a",0),("b",0))
-    G.addEdge(("b",0),("c",0))
-    G.addEdge(("c",0),("d",0))
-    G.addEdge(("a",0),("d",0))
+    '''
+    G = Model.Graph([1,2,3,4])
+    G.addEdge(1,2)
+    G.addEdge(2,3)
+    G.addEdge(3,4)
+    G.addEdge(1,4)
     D = [1,2,3]
     csp(G,D,constraint)
+    '''
 
     f1 = Model.Faculty("F1", ["8:30", "10:00", "11:40"], ["8:30", "10:00", "13:30", "15:00"], [], ["11:40", "13:30"],
                        ["10:00", "11:40", "13:30"])
@@ -94,5 +97,5 @@ if __name__ == "__main__":
 
     s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l1, l3, l4], [l1, l3, l4], [l1, l3, l4], [l1, l3, l4])
 
-    #CSP(s1)
+    CSP(s1)
     print("finish")
