@@ -78,11 +78,11 @@ def connectLessonsInDay(day):
 class Schedule:
     def __init__(self, faculty, m, t, w, tr, f):  # String, rest: list of lessons that eventually turn into graphs
         self.faculty = faculty
-        self.monday = m
-        self.tuesday = t
-        self.wednesday = w
-        self.thursday = tr
-        self.friday = f
+        self.monday = Graph(m)
+        self.tuesday = Graph(t)
+        self.wednesday = Graph(w)
+        self.thursday = Graph(tr)
+        self.friday = Graph(f)
         for i in range(5):
             connectLessonsInDay(self.get(i))
 

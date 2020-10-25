@@ -16,21 +16,22 @@ def constraintSchedule(lessons, time):
 
 def CSP(schedule):
     con = constraintSchedule
-    monday_copy = csp(schedule.monday, schedule.faculty.monday, con)
-    print("\n")
-    tuesday_copy = csp(schedule.tuesday, schedule.faculty.tuesday, con)
-    print("\n")
-    wednesday_copy = csp(schedule.wednesday, schedule.faculty.wednesday, con)
-    print("\n")
-    thursday_copy = csp(schedule.thursday, schedule.faculty.thursday, con)
-    print("\n")
-    friday_copy = csp(schedule.friday, schedule.faculty.friday, con)
+    monday_copy = csp(schedule.monday, schedule.faculty.monday, con).getVertices()
+    # print("\n")
+    tuesday_copy = csp(schedule.tuesday, schedule.faculty.tuesday, con).getVertices()
+    # print("\n")
+    wednesday_copy = csp(schedule.wednesday, schedule.faculty.wednesday, con).getVertices()
+    # print("\n")
+    thursday_copy = csp(schedule.thursday, schedule.faculty.thursday, con).getVertices()
+    # print("\n")
+    friday_copy = csp(schedule.friday, schedule.faculty.friday, con).getVertices()
     return Model.Schedule(schedule.faculty, monday_copy, tuesday_copy, wednesday_copy, thursday_copy, friday_copy)
 
 
 def csp(graph, domain, constraint):
     if len(domain) < graph.maxDegree():
-        return "???"
+        print("This day has no lessons! Chill!")
+        return
     used_domain = []
     global kek
     kek = False
@@ -48,13 +49,14 @@ def cspUtil(graph, graph_copy, vertices, k, domain, used_domain, constraint):
             if kek:
                 return graph_copy
 
-            print(str(vertices[k]) + "move to", str(i))
+            # print(str(vertices[k]) + "move to", str(i))
             changeTime(graph_copy, vertices[k], i)
 
             used_domain_copy = copy.deepcopy(used_domain)
             used_domain_copy.append(i)
 
             cspUtil(graph, graph_copy, vertices, k + 1, domain, used_domain_copy, constraint)
+    return graph_copy
 
 
 def getSortedVerticesMRV(graph):
@@ -96,8 +98,8 @@ if __name__ == "__main__":
     G.addEdge("a", "b")
     G.addEdge("b", "c")
 
-    s1 = Model.Schedule(f1, Model.Graph([l1, l7, l2, l3]), Model.Graph([l3, l5, l6, l7]),
-                        Model.Graph([l6, l7, l8]), Model.Graph([l8, l9, l10]), Model.Graph([l1, l3, l4]))
+    s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l3, l5, l6, l7],
+                        [l6, l7, l8], [l8, l9, l10], [l1, l3, l4])
 
     '''    print(s1.monday.getVertex(l3))
     changeTime(s1.monday, l3, "18:00")
