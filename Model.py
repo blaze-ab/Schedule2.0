@@ -78,11 +78,11 @@ def connectLessonsInDay(day):
 class Schedule:
     def __init__(self, faculty, m, t, w, tr, f):  # String, rest: list of lessons that eventually turn into graphs
         self.faculty = faculty
-        self.monday = Graph(m)
-        self.tuesday = Graph(t)
-        self.wednesday = Graph(w)
-        self.thursday = Graph(tr)
-        self.friday = Graph(f)
+        self.monday = m
+        self.tuesday = t
+        self.wednesday = w
+        self.thursday = tr
+        self.friday = f
         for i in range(5):
             connectLessonsInDay(self.get(i))
 
@@ -212,7 +212,7 @@ class Graph:
                 res = self.degree(v)
         return res
 
-    def getNeigbours(self, v):
+    def getNeighbours(self, v):
         if v not in self.graph.keys():
             return list()
         return list(self.graph[v])

@@ -10,8 +10,8 @@ def constraintSchedule(lessons, time):
     return False
 
 
-#def constraint(list_of_val, i):
-    #return i in list_of_val
+# def constraint(list_of_val, i):
+# return i in list_of_val
 
 
 def CSP(schedule):
@@ -19,14 +19,13 @@ def CSP(schedule):
     monday_copy = csp(schedule.monday, schedule.faculty.monday, con)
     print("\n")
     tuesday_copy = csp(schedule.tuesday, schedule.faculty.tuesday, con)
-    print ("\n")
+    print("\n")
     wednesday_copy = csp(schedule.wednesday, schedule.faculty.wednesday, con)
-    print ("\n")
+    print("\n")
     thursday_copy = csp(schedule.thursday, schedule.faculty.thursday, con)
-    print ("\n")
+    print("\n")
     friday_copy = csp(schedule.friday, schedule.faculty.friday, con)
-    return Model.Schedule(schedule.faculty, monday_copy, tuesday_copy, wednesday_copy,\
-        thursday_copy, friday_copy)
+    return Model.Schedule(schedule.faculty, monday_copy, tuesday_copy, wednesday_copy, thursday_copy, friday_copy)
 
 
 def csp(graph, domain, constraint):
@@ -45,18 +44,17 @@ def cspUtil(graph, graph_copy, vertices, k, domain, used_domain, constraint):
         print("\n")
         return graph_copy
     for i in domain:
-        if not constraint(graph_copy.getNeigbours(vertices[k]), i):
+        if not constraint(graph_copy.getNeighbours(vertices[k]), i):
             if kek:
                 return graph_copy
-                
+
             print(str(vertices[k]) + "move to", str(i))
             changeTime(graph_copy, vertices[k], i)
-            
+
             used_domain_copy = copy.deepcopy(used_domain)
             used_domain_copy.append(i)
-                
-            cspUtil(graph, graph_copy,vertices, k + 1, domain, used_domain_copy, constraint)
 
+            cspUtil(graph, graph_copy, vertices, k + 1, domain, used_domain_copy, constraint)
 
 
 def getSortedVerticesMRV(graph):
@@ -82,8 +80,8 @@ if __name__ == "__main__":
     csp(G,D,constraint)
     '''
 
-    f1 = Model.Faculty("F1", ["8:30", "10:00", "11:40"], ["8:30", "10:00", "13:30", "15:00"], ["10:00", "11:40", "13:30"], ["11:40", "13:30"],
-                       ["10:00", "11:40", "13:30"])
+    f1 = Model.Faculty("F1", ["8:30", "10:00", "11:40"], ["8:30", "10:00", "13:30", "15:00"],
+                       ["10:00", "11:40", "13:30"], ["11:40", "13:30"], ["10:00", "11:40", "13:30"])
     l1 = Model.Lesson("l1", "11:40", Model.Teacher("Jett"), ["s2", "s222", "s3333"], True)
     l2 = Model.Lesson("l2", "10:00", Model.Teacher("Brimstone"), ["s134", "s2", "s6"], False)
     l3 = Model.Lesson("l3", "11:40", Model.Teacher("Raze"), ["s1", "s22", "s5"], True)
@@ -98,7 +96,8 @@ if __name__ == "__main__":
     G.addEdge("a", "b")
     G.addEdge("b", "c")
 
-    s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l3, l5, l6, l7], [l6, l7, l8], [l8, l9, l10], [l1, l3, l4])
+    s1 = Model.Schedule(f1, Model.Graph([l1, l7, l2, l3]), Model.Graph([l3, l5, l6, l7]),
+                        Model.Graph([l6, l7, l8]), Model.Graph([l8, l9, l10]), Model.Graph([l1, l3, l4]))
 
     '''    print(s1.monday.getVertex(l3))
     changeTime(s1.monday, l3, "18:00")
