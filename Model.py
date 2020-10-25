@@ -1,3 +1,5 @@
+
+
 DAYS = 5
 
 
@@ -149,7 +151,7 @@ class Schedule:
 # for any i lesson1.students[i] == lesson2.students[i])
 # returns true if lessons fit the constraints mentioned above
 def shouldConnect(lesson1, lesson2):
-    if lesson1.name != lesson2.name or lesson1.time != lesson2.time:
+    if lesson1.name != lesson2.name:
         return False
     if lesson1.teacher == lesson2.teacher and lesson1.lecture == lesson2.lecture:
         return True
@@ -157,6 +159,10 @@ def shouldConnect(lesson1, lesson2):
         if student in lesson2.students:
             return False
     return True
+
+
+def conflict(lesson1, lesson2):
+    return shouldConnect(lesson1, lesson2) and lesson1.time == lesson2.time
 
 
 class Graph:
@@ -183,13 +189,18 @@ class Graph:
     def degree(self, v):
         return len(self.graph[v])
 
+    def getNeigbours(self, v):
+        return list(self.graph[v])
+
     def addEdge(self, v1, v2):
+        if v1 == v2:
+            return
         if v2 in self.graph[v1]:
             return
-        if v1 in self.graph:
+        if v1 in self.graph and v2 in self.graph:
             self.graph[v1].append(v2)
-        else:
-            self.graph[v1] = [v2]
+            self.graph[v2].append(v1)
+        #can't add edges if vertices don't exist    
 
     def removeEdge(self, v1, v2):
         self.graph[v1].pop(v2)
