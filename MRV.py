@@ -2,23 +2,39 @@ import Model
 import copy
 import math
 
+def constraint(list, i):
+    return False
 
-def dfs2(graph, domain):
-    vertices = graph.getVertices()
+def CSP(schedule):
+    con = constraint
+    csp(schedule.monday, schedule.faculty.monday, con)
+    csp(schedule.tuesday, schedule.faculty.tuesday, con)
+    csp(schedule.wednesday, schedule.faculty.wednesday, con)
+    csp(schedule.thursday, schedule.faculty.thursday, con)
+    csp(schedule.friday, schedule.faculty.friday, con)
+
+
+def csp(graph, domain, constraint):
+    #vertices = graph.getVertices()
     used_domain = []
-    dfsUtil2(vertices, 0, domain, used_domain)
+    cspUtil(graph, getSortedVerticesMRV(graph), 0, domain, used_domain, constraint)
 
 
-def dfsUtil2(vertices, k, domain, used_domain):
+def cspUtil(graph, vertices, k, domain, used_domain, constraint):
     if len(used_domain) == len(domain) or k == len(vertices):
+        print( "finished")
         return
     for i in domain:
         if i not in used_domain:
-            print(str(vertices[k]) + "=", str(i))
-            used_domain_copy = copy.deepcopy(used_domain)
-            used_domain_copy.append(i)
+            if not constraint(graph.getNeigbours(vertices[k]), i):
+                vertices[k].time = i
+                print(str(vertices[k]) + "move to", str(i))
+                used_domain_copy = copy.deepcopy(used_domain)
+                used_domain_copy.append(i)
 
-            dfsUtil2(vertices, k + 1, domain, used_domain_copy)
+                cspUtil(graph, vertices, k + 1, domain, used_domain_copy, constraint)
+            else : 
+                return
 
 
 def getSortedVerticesMRV(graph):
@@ -60,5 +76,5 @@ if __name__ == "__main__":
         print(sorted_vertices[i])
     for j in range(len(s1.monday.getVertices())):
         print(s1.monday.getVertices()[j])
-    # dfs2(G, d)
+    CSP(s1)
     print("finish")
