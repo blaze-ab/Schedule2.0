@@ -178,6 +178,8 @@ class Graph:
             for v in graph_elements:
                 self.graph[v] = []
 
+    
+
     # Get the keys of the dictionary
     def getVertices(self):
         return list(self.graph.keys())
@@ -193,9 +195,20 @@ class Graph:
                 self.removeEdge(vertex, v)
 
     def degree(self, v):
+        if v not in self.graph.keys():
+            return 0
         return len(self.graph[v])
 
+    def maxDegree(self):
+        res = 0
+        for v in self.getVertices():
+            if self.degree(v) > res:
+                res = self.degree(v)
+        return res
+
     def getNeigbours(self, v):
+        if v not in self.graph.keys():
+            return list()
         return list(self.graph[v])
 
     def addEdge(self, v1, v2):
