@@ -2,8 +2,10 @@ import Model
 import copy
 import math
 
+
 def constraintSchedule(list, i):
     return False
+
 
 def constraint(list_of_pairs, i):
     list_of_val = []
@@ -15,7 +17,7 @@ def constraint(list_of_pairs, i):
 def CSP(schedule):
     con = constraintSchedule
     csp(schedule.monday, schedule.faculty.monday, con)
-    print ("\n")
+    print("\n")
     #csp(schedule.tuesday, schedule.faculty.tuesday, con)
     #print ("\n")
     #csp(schedule.wednesday, schedule.faculty.wednesday, con)
@@ -34,14 +36,14 @@ def csp(graph, domain, constraint):
 
 
 def cspUtil(graph, vertices, k, domain, used_domain, constraint, finished):
-    if  k >= len(vertices):
+    if k >= len(vertices):
         global kek
         kek = True
-        print ("\n")
+        print("\n")
         return
     for i in domain:
         if not constraint(graph.getNeigbours(vertices[k]), i):
-            if kek == True:
+            if kek:
                 return 
             if not constraint(graph.getNeigbours(vertices[k]), i):
                 
@@ -61,7 +63,10 @@ def getSortedVerticesMRV(graph):
     vertices.sort(key=lambda x: graph.degree(x), reverse=True)
     return vertices
 
+
 kek = False
+
+
 if __name__ == "__main__":
     G = Model.Graph([( "a",0), ("b",0), ("c",0), ("d",0)])
     G.addEdge(("a",0),("b",0))

@@ -178,8 +178,6 @@ class Graph:
             for v in graph_elements:
                 self.graph[v] = []
 
-    
-
     # Get the keys of the dictionary
     def getVertices(self):
         return list(self.graph.keys())
@@ -187,6 +185,9 @@ class Graph:
     def addVertex(self, v):
         if v not in self.graph:
             self.graph[v] = []
+
+    def changeVertex(self, old_v, new_v):
+        self.graph[new_v] = self.graph.pop[old_v]
 
     def removeVertex(self, v):
         self.graph.pop(v)
