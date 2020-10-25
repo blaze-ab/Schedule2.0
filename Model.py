@@ -1,5 +1,3 @@
-
-
 DAYS = 5
 
 
@@ -36,6 +34,9 @@ class Teacher:
     def __str__(self):
         return self.name
 
+    def __hash__(self):
+        return hash(self.name)
+
 
 class Lesson:
     def __init__(self, name, time, t, students, lecture):  # String, Teacher, Array String, bool
@@ -53,11 +54,18 @@ class Lesson:
                and self.teacher == other.teacher and self.isLecture() == other.isLecture()
 
     def __str__(self):
-        objLesson = "Time: " + self.time + "\n" + "Subject: " + self.name + "\n" + \
-                    "Teacher: " + self.teacher.__str__() + "\n"
+        objLesson = 'Time: ' + self.time + '\n' + 'Subject: ' + self.name + "\n" + \
+                    'Teacher: ' + self.teacher.__str__() + "\n"
         if self.lecture:
-            objLesson += "Lecture." + "\n"
-        return objLesson
+            objLesson += 'Lecture.' + "\n"
+        return 'Time: ' + self.time + '\n' + 'Subject: ' + self.name + "\n" + \
+               'Teacher: ' + str(self.teacher) + "\n"
+
+    def __hash__(self):
+        students_hash = 0
+        for i in range(len(self.students)):
+            students_hash += hash(self.students[i])
+        return hash(self.name) + hash(self.teacher) + hash(self.time) + students_hash + hash(self.lecture)
 
 
 def connectLessonsInDay(day):
@@ -151,14 +159,12 @@ class Schedule:
 # for any i lesson1.students[i] == lesson2.students[i])
 # returns true if lessons fit the constraints mentioned above
 def shouldConnect(lesson1, lesson2):
-    if lesson1.name != lesson2.name:
-        return False
     if lesson1.teacher == lesson2.teacher and lesson1.lecture == lesson2.lecture:
         return True
     for student in lesson1.students:
         if student in lesson2.students:
-            return False
-    return True
+            return True
+    return False
 
 
 def conflict(lesson1, lesson2):
@@ -168,7 +174,7 @@ def conflict(lesson1, lesson2):
 class Graph:
     def __init__(self, graph_elements=None):
         self.graph = dict()
-        if graph_elements != None:
+        if graph_elements is not None:
             for v in graph_elements:
                 self.graph[v] = []
 
@@ -200,7 +206,7 @@ class Graph:
         if v1 in self.graph and v2 in self.graph:
             self.graph[v1].append(v2)
             self.graph[v2].append(v1)
-        #can't add edges if vertices don't exist    
+        # can't add edges if vertices don't exist
 
     def removeEdge(self, v1, v2):
         self.graph[v1].pop(v2)
