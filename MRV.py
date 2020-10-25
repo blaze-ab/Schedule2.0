@@ -37,6 +37,9 @@ def csp(graph, domain, constraint):
     cspUtil(graph, getSortedVerticesMRV(graph), 0, domain, used_domain, constraint)
 
 
+
+
+
 def cspUtil(graph, vertices, k, domain, used_domain, constraint):
     if k >= len(vertices):
         global kek
@@ -68,6 +71,11 @@ def getSortedVerticesMRV(graph):
 kek = False
 
 
+def changeTime(graph_day, lesson_vertex, time):
+    lesson = graph_day.getVertex(lesson_vertex)
+    lesson.time = time
+
+
 if __name__ == "__main__":
     '''
     G = Model.Graph([1,2,3,4])
@@ -97,5 +105,8 @@ if __name__ == "__main__":
 
     s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l1, l3, l4], [l1, l3, l4], [l1, l3, l4], [l1, l3, l4])
 
+    '''    print(s1.monday.getVertex(l3))
+    changeTime(s1.monday, l3, "18:00")
+    print(s1.monday.getVertex(l3))'''
     CSP(s1)
     print("finish")

@@ -182,6 +182,11 @@ class Graph:
     def getVertices(self):
         return list(self.graph.keys())
 
+    def getVertex(self, needed_v):
+        for key in self.graph.keys():
+            if key is needed_v:
+                return key
+
     def addVertex(self, v):
         if v not in self.graph:
             self.graph[v] = []
