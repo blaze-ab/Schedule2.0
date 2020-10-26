@@ -83,7 +83,7 @@ class Schedule:
         self.wednesday = Graph(w)
         self.thursday = Graph(tr)
         self.friday = Graph(f)
-        for i in range(5):
+        for i in range(6):
             connectLessonsInDay(self.get(i))
 
     def get(self, i):
