@@ -29,7 +29,7 @@ def csp(graph, domain, constraint):
         raise NameError("schedule is incompatible with the model")
     global DONE
     DONE = False
-    return cspUtil(graph, copy.deepcopy(graph), getSortedVertices(graph), 0, domain, constraint)
+    return cspUtil(graph, copy.deepcopy(graph), graph.getVertices(), 0, domain, constraint)
 
 
 def cspUtil(graph, graph_copy, vertices, k, domain, constraint):
@@ -39,33 +39,18 @@ def cspUtil(graph, graph_copy, vertices, k, domain, constraint):
         print("\n")
         return graph_copy
     for i in domain:
-        #vertices = getSortedVertices(graph)
+        if DONE:
+            return graph_copy
 
-        if not constraint(graph_copy.getNeighbours(vertices[0]), i):
-            if DONE:
-                return graph_copy
-            print(str(vertices[k]) + "move to", str(i))
-            changeTime(graph_copy, vertices[0], i)
+        #index = random.choice(Heuristic)
+        index = k
+        
+        if not constraint(graph_copy.getNeighbours(vertices[index]), i):
+            print(str(vertices[index]) + "move to", str(i))
+            changeTime(graph_copy, vertices[index], i)
 
-            return cspUtil(graph, graph_copy, getSortedVertices(graph), k + 1, domain, constraint)
+            return cspUtil(graph, graph_copy, vertices, k + 1, domain, constraint)
     
-
-<<<<<<< Updated upstream
-=======
-def adjNotAssigned(graph, lesson):
-    adj = graph.getNeighbours(lesson)
-    for l in adj:
-        if l.time != "none":
-            adj.remove(l)
-    return adj
-
-
->>>>>>> Stashed changes
-def getSortedVertices(graph):
-    vertices = graph.getVertices()
-    #vertices.sort(key=lambda x: graph.degree(x), reverse=True)
-    vertices.sort(key=lambda x: len(adjNotAssigned(graph, x)), reverse=True)
-    return vertices
 
 
 def changeTime(graph_day, lesson_vertex, time):
@@ -94,7 +79,8 @@ if __name__ == "__main__":
 
     s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l3, l5, l6, l7],
                         [l6, l7, l8], [l8, l9, l2], [l1, l3, l9])
-    # print( s1.friday.getNeighbours(l3))
+    #print( s1.friday.getNeighbours(l3))
+
 
     print(CSP(s1))
     print("finish")
