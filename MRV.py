@@ -49,7 +49,6 @@ def cspUtil(graph, graph_copy, vertices, k, domain, constraint):
             return cspUtil(graph, graph_copy, vertices, k + 1, domain, constraint)
     
 
-
 def getSortedVertices(graph):
     vertices = graph.getVertices()
     vertices.sort(key=lambda x: graph.degree(x), reverse=True)
@@ -82,8 +81,7 @@ if __name__ == "__main__":
 
     s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l3, l5, l6, l7],
                         [l6, l7, l8], [l8, l9, l2], [l1, l3, l9])
-    #print( s1.friday.getNeighbours(l3))
-
+    # print( s1.friday.getNeighbours(l3))
 
     print(CSP(s1))
     print("finish")
