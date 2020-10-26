@@ -1,6 +1,8 @@
 import Model
 import copy
 import math
+import time
+
 
 def constraintSchedule(lessons, time):
     for lesson in lessons:
@@ -41,7 +43,7 @@ def cspUtil(graph, graph_copy, vertices, k, domain, constraint):
         if DONE:
             return graph_copy
 
-        #index = random.choice(Heuristic)
+        # index = random.choice(Heuristic)
         index = k
         
         if not constraint(graph_copy.getNeighbours(vertices[index]), i):
@@ -60,9 +62,10 @@ def possibleVals(graph, domain, vertex):
                 possible_vals.remove(val)
     return possible_vals
 
+
 def valuesLCV(graph, domain, vertex):
     adj = graph.getNeighbours(vertex)
-    #create an array that will store info about how many times a value can be used in adjacent vertices
+    # create an array that will store info about how many times a value can be used in adjacent vertices
     values_repeated = []
     for i in domain:
         values_repeated.append(0)
@@ -71,13 +74,13 @@ def valuesLCV(graph, domain, vertex):
             if domain[i] in possibleVals(graph, domain, u):
                 values_repeated[i] += 1
 
-    #find a value that repeats minimal amount of times
+    # find a value that repeats minimal amount of times
     min = 100000000
     for val in values_repeated:
         if val<min:
             min = val
 
-    #return all values that repeat as much as minimaly repeated value 
+    # return all values that repeat as much as minimaly repeated value
     indices = []
     for val in values_repeated:
         if val == min:
@@ -106,8 +109,10 @@ if __name__ == "__main__":
 
     s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l3, l5, l6, l7],
                         [l6, l7, l8], [l8, l9, l2], [l1, l3, l9])
-    #print( s1.friday.getNeighbours(l3))
-
-
+    # print( s1.friday.getNeighbours(l3))
+    tic = time.perf_counter()
     print(CSP(s1))
+    toc = time.perf_counter()
+    print(f"The time to create the most suitable schedule using LCV heuristic "
+          f"will be: {toc - tic:0.4f} seconds")
     print("finish")

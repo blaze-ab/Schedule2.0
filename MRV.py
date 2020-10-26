@@ -105,5 +105,5 @@ if __name__ == "__main__":
     tic = time.perf_counter()
     print(CSP(s1))
     toc = time.perf_counter()
-    print(f"The time to create the most suitable schedule using MRV and LCV heuristics combined "
+    print(f"The time to create the most suitable schedule using MRV heuristic "
           f"will be: {toc - tic:0.4f} seconds")
