@@ -10,10 +10,6 @@ def constraintSchedule(lessons, time):
     return False
 
 
-# def constraint(list_of_val, i):
-# return i in list_of_val
-
-
 def CSP(schedule):
     con = constraintSchedule
     monday_copy = csp(schedule.monday, schedule.faculty.monday, con).getVertices()
@@ -30,36 +26,31 @@ def CSP(schedule):
 
 def csp(graph, domain, constraint):
     if len(domain) < graph.maxDegree():
-        print("This day has no lessons! Chill!")
-        return
-    used_domain = []
-    global kek
-    kek = False
-    return cspUtil(graph, copy.deepcopy(graph), getSortedVerticesMRV(graph), 0, domain, used_domain, constraint)
+        raise NameError("schedule is incompatible with the model")
+    global DONE
+    DONE = False
+    return cspUtil(graph, copy.deepcopy(graph), getSortedVertices(graph), 0, domain, constraint)
 
 
-def cspUtil(graph, graph_copy, vertices, k, domain, used_domain, constraint):
+def cspUtil(graph, graph_copy, vertices, k, domain, constraint):
     if k >= len(vertices):
-        global kek
-        kek = True
+        global DONE
+        DONE = True
         print("\n")
         return graph_copy
     for i in domain:
         if not constraint(graph_copy.getNeighbours(vertices[k]), i):
-            if kek:
+            if DONE:
                 return graph_copy
 
-            # print(str(vertices[k]) + "move to", str(i))
+            print(str(vertices[k]) + "move to", str(i))
             changeTime(graph_copy, vertices[k], i)
 
-            used_domain_copy = copy.deepcopy(used_domain)
-            used_domain_copy.append(i)
-
-            cspUtil(graph, graph_copy, vertices, k + 1, domain, used_domain_copy, constraint)
-    return graph_copy
+            return cspUtil(graph, graph_copy, vertices, k + 1, domain, constraint)
+    
 
 
-def getSortedVerticesMRV(graph):
+def getSortedVertices(graph):
     vertices = graph.getVertices()
     vertices.sort(key=lambda x: graph.degree(x), reverse=True)
     return vertices
@@ -70,17 +61,8 @@ def changeTime(graph_day, lesson_vertex, time):
     lesson.time = time
 
 
-kek = False
+DONE = False
 if __name__ == "__main__":
-    '''
-    G = Model.Graph([1,2,3,4])
-    G.addEdge(1,2)
-    G.addEdge(2,3)
-    G.addEdge(3,4)
-    G.addEdge(1,4)
-    D = [1,2,3]
-    csp(G,D,constraint)
-    '''
 
     f1 = Model.Faculty("F1", ["8:30", "10:00", "11:40"], ["8:30", "10:00", "13:30", "15:00"],
                        ["10:00", "11:40", "13:30"], ["11:40", "13:30"], ["10:00", "11:40", "13:30"])
@@ -101,8 +83,5 @@ if __name__ == "__main__":
     s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l3, l5, l6, l7],
                         [l6, l7, l8], [l8, l9, l2], [l1, l3, l9])
 
-    '''    print(s1.monday.getVertex(l3))
-    changeTime(s1.monday, l3, "18:00")
-    print(s1.monday.getVertex(l3))'''
     print(CSP(s1))
     print("finish")
