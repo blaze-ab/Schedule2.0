@@ -166,6 +166,9 @@ def shouldConnect(lesson1, lesson2):
             return True
     return False
 
+def changeTime(graph_day, lesson_vertex, time):
+    lesson = graph_day.getVertex(lesson_vertex)
+    lesson.time = time
 
 def conflict(lesson1, lesson2):
     return shouldConnect(lesson1, lesson2) and lesson1.time == lesson2.time

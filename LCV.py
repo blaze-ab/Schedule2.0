@@ -1,8 +1,6 @@
 import Model
 import copy
-import random
 import math
-
 
 def constraintSchedule(lessons, time):
     for lesson in lessons:
@@ -43,13 +41,14 @@ def cspUtil(graph, graph_copy, vertices, k, domain, constraint):
         if DONE:
             return graph_copy
 
-        index = random.choice(indicesMRV(graph_copy, domain))
+        #index = random.choice(Heuristic)
+        index = k
         
         if not constraint(graph_copy.getNeighbours(vertices[index]), i):
             print(str(vertices[index]) + "move to", str(i))
             Model.changeTime(graph_copy, vertices[index], i)
 
-            return cspUtil(graph, graph_copy, vertices, k + 1, domain, constraint)
+            return cspUtil(graph, graph_copy, vertices, k + 1, domain, constraint) 
 
 
 def possibleVals(graph, domain, vertex):
@@ -57,26 +56,32 @@ def possibleVals(graph, domain, vertex):
     possible_vals = copy.deepcopy(domain)
     for v in adj :
         for val in possible_vals:
-            if val == v.time:
+             if val == v.time:
                 possible_vals.remove(val)
     return possible_vals
 
+def valuesLCV(graph, domain, vertex):
+    adj = graph.getNeighbours(vertex)
+    #create an array that will store info about how many times a value can be used in adjacent vertices
+    values_repeated = []
+    for i in domain:
+        values_repeated.append(0)
+    for u in adj:
+        for i in range(domain):
+            if domain[i] in possibleVals(graph, domain, u):
+                values_repeated[i] += 1
 
-def indicesMRV(graph, domain):
-    vertices = graph.getVertices()
-    min = 1000000
-    for v in vertices:
-        if v.time !="none":
-            continue
-        vals = len(possibleVals(graph, domain, v))
-        if vals < min:
-            min = vals
+    #find a value that repeats minimal amount of times
+    min = 100000000
+    for val in values_repeated:
+        if val<min:
+            min = val
 
+    #return all values that repeat as much as minimaly repeated value 
     indices = []
-    for i in range(len(vertices)):
-        if min == len(possibleVals(graph, domain, vertices[i])):
-            if vertices[i].time == "none":
-                indices.append(i)
+    for val in values_repeated:
+        if val == min:
+            indices.append(val)
     return indices
 
 
@@ -101,5 +106,8 @@ if __name__ == "__main__":
 
     s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l3, l5, l6, l7],
                         [l6, l7, l8], [l8, l9, l2], [l1, l3, l9])
+    #print( s1.friday.getNeighbours(l3))
+
 
     print(CSP(s1))
+    print("finish")
