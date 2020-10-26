@@ -2,6 +2,7 @@ import Model
 import copy
 import random
 import math
+import time
 
 
 def constraintSchedule(lessons, time):
@@ -44,7 +45,7 @@ def cspUtil(graph, graph_copy, vertices, k, domain, constraint):
             return graph_copy
 
         index = random.choice(indicesMRV(graph_copy, domain))
-        
+
         if not constraint(graph_copy.getNeighbours(vertices[index]), i):
             print(str(vertices[index]) + "move to", str(i))
             Model.changeTime(graph_copy, vertices[index], i)
@@ -55,7 +56,7 @@ def cspUtil(graph, graph_copy, vertices, k, domain, constraint):
 def possibleVals(graph, domain, vertex):
     adj = graph.getNeighbours(vertex)
     possible_vals = copy.deepcopy(domain)
-    for v in adj :
+    for v in adj:
         for val in possible_vals:
             if val == v.time:
                 possible_vals.remove(val)
@@ -66,7 +67,7 @@ def indicesMRV(graph, domain):
     vertices = graph.getVertices()
     min = 1000000
     for v in vertices:
-        if v.time !="none":
+        if v.time != "none":
             continue
         vals = len(possibleVals(graph, domain, v))
         if vals < min:
@@ -82,7 +83,6 @@ def indicesMRV(graph, domain):
 
 DONE = False
 if __name__ == "__main__":
-
     f1 = Model.Faculty("F1", ["8:30", "10:00", "11:40"], ["8:30", "10:00", "13:30", "15:00"],
                        ["10:00", "11:40", "13:30"], ["11:40", "13:30"], ["10:00", "11:40", "13:30"])
     l1 = Model.Lesson("l1", "none", Model.Teacher("Jett"), ["s2", "s222", "s3333"], True)
@@ -102,4 +102,7 @@ if __name__ == "__main__":
     s1 = Model.Schedule(f1, [l1, l7, l2, l3], [l3, l5, l6, l7],
                         [l6, l7, l8], [l8, l9, l2], [l1, l3, l9])
 
+    tic = time.perf_counter()
     print(CSP(s1))
+    toc = time.perf_counter()
+    print(f"The time to create the most suitable schedule will be: {toc - tic:0.4f} seconds")
